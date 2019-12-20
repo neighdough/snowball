@@ -3,7 +3,16 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from sqlalchemy import create_engine
 
+CONNECTION_PARAMS = {"host":os.getenv("PGHOST"),
+                     "user":os.getenv("PGUSER"),
+                     "password":os.getenv("PGPASS"),
+                     "db":os.getenv("PGDB")
+                     "port":os.getenv("PGPORT")
+                     }
+CONNECTION_STRING = "postgresql://{user}:{password}@{host}/{db}"
+ENGINE = create_engine(CONNECTION_STRING.format(**CONNECTION_PARAMS))
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))
